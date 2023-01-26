@@ -10,13 +10,11 @@ const port = 8080
 
 type application struct {
 	Domain string
-
 }
 
 func main() {
 	// set application config
 	var app application
-
 
 	// read from command line
 
@@ -31,6 +29,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 
 }
