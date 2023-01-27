@@ -5,12 +5,12 @@ import App from "./App";
 import ErrorPage from "./components/ErrorPage";
 import Home from "./components/Home";
 import Movies from "./components/Movies";
-import Genres from './components/Genres';
-import Login from './components/Login';
-import GraphQL from './components/GraphQL';
-import ManageCatalogue from './components/ManageCatalogue';
-import EditMovie from './components/EditMovie';
-import Movie from './components/Movie';
+import Genres from "./components/Genres";
+import Login from "./components/Login";
+import GraphQL from "./components/GraphQL";
+import ManageCatalogue from "./components/ManageCatalogue";
+import EditMovie from "./components/EditMovie";
+import Movie from "./components/Movie";
 
 const router = createBrowserRouter([
   {
