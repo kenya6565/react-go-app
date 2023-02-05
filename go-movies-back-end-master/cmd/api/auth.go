@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -78,4 +79,42 @@ func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 
 	// return TokenPairs
 	return tokenPairs, nil
+}
+
+func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
+	return &http.Cookie{
+		Name:    j.CookieName,
+		Path:    j.CookiePath,
+		Value:   refreshToken,
+		Expires: time.Now().Add(j.RefreshExpiry),
+		MaxAge:  int(j.RefreshExpiry.Seconds()),
+
+		// only can access the same domain
+		SameSite: http.SameSiteStrictMode,
+		Domain:   j.CookieDomain,
+
+		// js will have no access to this cookie
+		HttpOnly: true,
+		Secure:   true,
+	}
+
+}
+
+func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
+	return &http.Cookie{
+		Name:    j.CookieName,
+		Path:    j.CookiePath,
+		Value:   "",
+		Expires: time.Unix(0, 0),
+		MaxAge:  -1,
+
+		// only can access the same domain
+		SameSite: http.SameSiteStrictMode,
+		Domain:   j.CookieDomain,
+
+		// js will have no access to this cookie
+		HttpOnly: true,
+		Secure:   true,
+	}
+
 }
