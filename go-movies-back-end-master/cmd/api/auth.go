@@ -20,7 +20,7 @@ type Auth struct {
 }
 
 type jwtUser struct {
-	ID        string `json:"id"`
+	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
@@ -41,7 +41,7 @@ func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 	// set the claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["name"] = fmt.Sprintf("%s %s", user.FirstName, user.LastName)
-	claims["sub"] = fmt.Sprintf(user.ID)
+	claims["sub"] = fmt.Sprint(user.ID)
 	claims["aud"] = j.Audience
 	claims["iss"] = j.Issuer
 	claims["iat"] = time.Now().UTC().Unix()
