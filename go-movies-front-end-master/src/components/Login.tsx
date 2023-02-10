@@ -34,7 +34,7 @@ const Login = () => {
       password: password,
     };
 
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,23 @@ const Login = () => {
       body: JSON.stringify(payload),
     };
 
-    fetch("/authenticate", requestOptions).then((response) => response.json());
+    fetch("/authenticate", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          setAlertClassName("alert-danger");
+          setAlertMessage(data.message);
+        } else {
+          setJwtToken(data.access_token);
+          setAlertClassName("d-none");
+          setAlertMessage("");
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        setAlertClassName("alert-danger");
+        setAlertMessage(error);
+      });
   };
 
   return (

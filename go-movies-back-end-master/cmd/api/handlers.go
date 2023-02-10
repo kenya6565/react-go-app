@@ -30,19 +30,19 @@ func (app *application) AllMovies(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
-	//  read json payload
+	// read json payload
 	var requestPayload struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
 
-	err := app.readJSON(w, r, requestPayload)
+	err := app.readJSON(w, r, &requestPayload)
 	if err != nil {
 		app.errorJSON(w, err, http.StatusBadRequest)
 		return
 	}
 
-	// validate user against database(make sure whether user exists)
+	// validate user against database
 	user, err := app.DB.GetUserByEmail(requestPayload.Email)
 	if err != nil {
 		app.errorJSON(w, errors.New("invalid credentials"), http.StatusBadRequest)
@@ -70,10 +70,8 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//  send refresh token cookie to user
 	refreshCookie := app.auth.GetRefreshCookie(tokens.RefreshToken)
 	http.SetCookie(w, refreshCookie)
 
 	app.writeJSON(w, http.StatusAccepted, tokens)
-
 }

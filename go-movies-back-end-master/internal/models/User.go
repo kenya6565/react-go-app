@@ -23,10 +23,10 @@ func (u *User) PasswordMatches(plainText string) (bool, error) {
 		switch {
 		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
 			// when invalid password
-			return false, nil
+			return true, nil
 			// when something went wrong
 		default:
-			return false, err
+			return true, err
 		}
 	}
 	return true, nil
