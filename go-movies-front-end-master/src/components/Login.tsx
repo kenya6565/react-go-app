@@ -27,17 +27,23 @@ const Login = () => {
     // prevent browser to reload as a default movement
     event.preventDefault();
     console.log("email/password", email, password);
-    if (email === "admin@example.com") {
-      setJwtToken("abc");
-      setAlertClassName("d-none");
-      setAlertMessage("");
 
-      // when successfully logging in, redirecting root
-      navigate("/");
-    } else {
-      setAlertClassName("alert-danger");
-      setAlertMessage("Invalid credentials");
-    }
+    // build the request payload
+    let payload = {
+      email: email,
+      password: password,
+    };
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    };
+
+    fetch("/authenticate", requestOptions).then((response) => response.json());
   };
 
   return (
