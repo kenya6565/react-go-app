@@ -7,6 +7,9 @@ function App() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertClassName, setAlertClassName] = useState("d-none");
 
+  const [ticking, setTicking] = useState(false);
+  const [tickInterval, setTickInterval] = useState();
+
   const navigate = useNavigate();
 
   const logOut = () => {
@@ -48,6 +51,21 @@ function App() {
       );
     }
   }, [jwtToken]);
+
+  const toggleRefresh = () => {
+    console.log("clicked");
+
+    if (!ticking) {
+      console.log("turning on ticking");
+      let i = setInterval(() => {
+        console.log("this will run every second");
+      }, 1000);
+
+      setTickInterval(i);
+      console.log("setting tick interval to " + i);
+    } else {
+    }
+  };
 
   return (
     <div className="container">
