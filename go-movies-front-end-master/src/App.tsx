@@ -8,7 +8,7 @@ function App() {
   const [alertClassName, setAlertClassName] = useState("d-none");
 
   const [ticking, setTicking] = useState(false);
-  const [tickInterval, setTickInterval] = useState();
+  const [tickInterval, setTickInterval] = useState<any>();
 
   const navigate = useNavigate();
 
@@ -57,13 +57,21 @@ function App() {
 
     if (!ticking) {
       console.log("turning on ticking");
-      let i = setInterval(() => {
+
+      // execute every 1 second
+      let i: any = setInterval(() => {
         console.log("this will run every second");
       }, 1000);
 
       setTickInterval(i);
-      console.log("setting tick interval to " + i);
+      console.log("setting tick interval to ", i);
+      setTicking(true);
     } else {
+      console.log("turning off ticking");
+      console.log("turning off tickInterval to ", tickInterval);
+      setTickInterval(null);
+      clearInterval(tickInterval);
+      setTicking(false);
     }
   };
 
@@ -131,6 +139,13 @@ function App() {
           </nav>
         </div>
         <div className="col-md-10">
+          <a
+            className="btn btn-outline-secondary"
+            href="#!"
+            onClick={toggleRefresh}
+          >
+            Toggle Ticking
+          </a>
           <Alert message={alertMessage} className={alertClassName} />
           {/* pass useState variable */}
           <Outlet
