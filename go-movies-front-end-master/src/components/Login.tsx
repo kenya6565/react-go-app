@@ -21,6 +21,8 @@ const Login = () => {
     setAlertMessage: (alertMessage: string) => void;
   } = useOutletContext();
 
+  const { toggleRefresh }: { toggleRefresh: (status: boolean) => void } = useOutletContext();
+
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,6 +55,7 @@ const Login = () => {
           setJwtToken(data.access_token);
           setAlertClassName("d-none");
           setAlertMessage("");
+          toggleRefresh(true);
           navigate("/");
         }
       })

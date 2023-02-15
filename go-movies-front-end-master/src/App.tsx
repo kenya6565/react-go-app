@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import Alert from "./components/Alert";
 
@@ -7,7 +7,6 @@ function App() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertClassName, setAlertClassName] = useState("d-none");
 
-  const [ticking, setTicking] = useState(false);
   const [tickInterval, setTickInterval] = useState<any>();
 
   const navigate = useNavigate();
@@ -24,10 +23,36 @@ function App() {
       })
       .finally(() => {
         setJwtToken("");
+        toggleRefresh(false);
       });
 
     navigate("/login");
   };
+
+  // use useCallback to avoid a warning from useEffect
+  const toggleRefresh = useCallback(
+    (status: boolean) => {
+      console.log("clicked");
+
+      if (status) {
+        console.log("turning on ticking");
+
+        // execute every 1 second
+        let i: any = setInterval(() => {
+          console.log("this will run every second");
+        }, 1000);
+
+        setTickInterval(i);
+        console.log("setting tick interval to ", i);
+      } else {
+        console.log("turning off ticking");
+        console.log("turning off tickInterval to ", tickInterval);
+        setTickInterval(null);
+        clearInterval(tickInterval);
+      }
+    },
+    [tickInterval]
+  );
 
   useEffect(() => {
     // execute only if the user does not already have a JWT token
@@ -43,6 +68,7 @@ function App() {
           .then((data) => {
             if (data.access_token) {
               setJwtToken(data.access_token);
+              toggleRefresh(true);
             }
           })
           .catch((error) => {
@@ -50,30 +76,7 @@ function App() {
           })
       );
     }
-  }, [jwtToken]);
-
-  const toggleRefresh = () => {
-    console.log("clicked");
-
-    if (!ticking) {
-      console.log("turning on ticking");
-
-      // execute every 1 second
-      let i: any = setInterval(() => {
-        console.log("this will run every second");
-      }, 1000);
-
-      setTickInterval(i);
-      console.log("setting tick interval to ", i);
-      setTicking(true);
-    } else {
-      console.log("turning off ticking");
-      console.log("turning off tickInterval to ", tickInterval);
-      setTickInterval(null);
-      clearInterval(tickInterval);
-      setTicking(false);
-    }
-  };
+  }, [jwtToken, toggleRefresh]);
 
   return (
     <div className="container">
@@ -154,6 +157,7 @@ function App() {
               setJwtToken,
               setAlertMessage,
               setAlertClassName,
+              toggleRefresh
             }}
           />
         </div>
