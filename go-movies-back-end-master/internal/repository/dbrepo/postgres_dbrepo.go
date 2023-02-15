@@ -18,7 +18,6 @@ func (m *PostgresDBRepo) Connection() *sql.DB {
 }
 
 func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
-	// if not finishing interacting with the database with in 3 seconds, it'll just strop
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -59,20 +58,21 @@ func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
 		}
 
 		movies = append(movies, &movie)
-
 	}
+
 	return movies, nil
 }
 
 func (m *PostgresDBRepo) GetUserByEmail(email string) (*models.User, error) {
-	// if not finishing interacting with the database with in 3 seconds, it'll just strop
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select id, email, first_name, last_name, password, created_at, updated_at from users where email = $1`
+	query := `select id, email, first_name, last_name, password,
+			created_at, updated_at from users where email = $1`
 
 	var user models.User
 	row := m.DB.QueryRowContext(ctx, query, email)
+
 	err := row.Scan(
 		&user.ID,
 		&user.Email,
@@ -82,6 +82,7 @@ func (m *PostgresDBRepo) GetUserByEmail(email string) (*models.User, error) {
 		&user.CreatedAt,
 		&user.UpdatedAt,
 	)
+
 	if err != nil {
 		return nil, err
 	}
@@ -94,10 +95,12 @@ func (m *PostgresDBRepo) GetUserByID(id int) (*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select id, email, first_name, last_name, password, created_at, updated_at from users where id = $1`
+	query := `select id, email, first_name, last_name, password,
+			created_at, updated_at from users where id = $1`
 
 	var user models.User
 	row := m.DB.QueryRowContext(ctx, query, id)
+
 	err := row.Scan(
 		&user.ID,
 		&user.Email,
@@ -107,6 +110,7 @@ func (m *PostgresDBRepo) GetUserByID(id int) (*models.User, error) {
 		&user.CreatedAt,
 		&user.UpdatedAt,
 	)
+
 	if err != nil {
 		return nil, err
 	}
