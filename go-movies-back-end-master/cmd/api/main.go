@@ -1,8 +1,8 @@
 package main
 
 import (
-	"backend/internal/models/repository"
-	"backend/internal/models/repository/dbrepo"
+	"backend/internal/repository"
+	"backend/internal/repository/dbrepo"
 	"flag"
 	"fmt"
 	"log"
@@ -28,7 +28,7 @@ func main() {
 	var app application
 
 	// read from command line
-	flag.StringVar(&app.DSN, "dsn", "host=localhost port=5432 user=postgres password=postgres dbname=movies sslmode=disable timezone=UTC connect_timeout=5", "postgres connection string")
+	flag.StringVar(&app.DSN, "dsn", "host=localhost port=5432 user=postgres password=postgres dbname=movies sslmode=disable timezone=UTC connect_timeout=5", "Postgres connection string")
 	flag.StringVar(&app.JWTSecret, "jwt-secret", "verysecret", "signing secret")
 	flag.StringVar(&app.JWTIssuer, "jwt-issuer", "example.com", "signing issuer")
 	flag.StringVar(&app.JWTAudience, "jwt-audience", "example.com", "signing audience")
@@ -41,7 +41,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	app.DB = &dbrepo.PostgresDBRepo{DB: conn}
 	defer app.DB.Connection().Close()
 
