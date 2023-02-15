@@ -36,12 +36,24 @@ function App() {
 
       if (status) {
         console.log("turning on ticking");
+        let i = setInterval(() => {
+          const requestOptions: RequestInit = {
+            method: "GET",
+            credentials: "include",
+          };
 
-        // execute every 1 second
-        let i: any = setInterval(() => {
-          console.log("this will run every second");
-        }, 1000);
-
+          // update refresh token every 10 mins
+          fetch(`/refresh`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.access_token) {
+                setJwtToken(data.access_token);
+              }
+            })
+            .catch((error) => {
+              console.log("user is not logged in");
+            });
+        }, 600000);
         setTickInterval(i);
         console.log("setting tick interval to ", i);
       } else {
@@ -62,19 +74,17 @@ function App() {
         credentials: "include",
       };
 
-      fetch("/refresh", requestOptions).then((response: Response) =>
-        response
-          .json()
-          .then((data) => {
-            if (data.access_token) {
-              setJwtToken(data.access_token);
-              toggleRefresh(true);
-            }
-          })
-          .catch((error) => {
-            console.log("user is not logged in", error);
-          })
-      );
+      fetch(`/refresh`, requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.access_token) {
+            setJwtToken(data.access_token);
+            toggleRefresh(true);
+          }
+        })
+        .catch((error) => {
+          console.log("user is not logged in", error);
+        });
     }
   }, [jwtToken, toggleRefresh]);
 
@@ -142,13 +152,6 @@ function App() {
           </nav>
         </div>
         <div className="col-md-10">
-          <a
-            className="btn btn-outline-secondary"
-            href="#!"
-            onClick={toggleRefresh}
-          >
-            Toggle Ticking
-          </a>
           <Alert message={alertMessage} className={alertClassName} />
           {/* pass useState variable */}
           <Outlet
@@ -157,7 +160,7 @@ function App() {
               setJwtToken,
               setAlertMessage,
               setAlertClassName,
-              toggleRefresh
+              toggleRefresh,
             }}
           />
         </div>
