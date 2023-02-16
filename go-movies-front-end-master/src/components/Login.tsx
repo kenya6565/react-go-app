@@ -21,7 +21,8 @@ const Login = () => {
     setAlertMessage: (alertMessage: string) => void;
   } = useOutletContext();
 
-  const { toggleRefresh }: { toggleRefresh: (status: boolean) => void } = useOutletContext();
+  const { toggleRefresh }: { toggleRefresh: (status: boolean) => void } =
+    useOutletContext();
 
   const navigate = useNavigate();
 
@@ -89,7 +90,7 @@ const Login = () => {
           name="password"
           autoComplete="password-new"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setEmail(event.target.value)
+            setPassword(event.target.value)
           }
         ></Input>
         <hr />
