@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	ID        int     `json:"id"`
+	ID        int       `json:"id"`
 	FirstName string    `json:"first_name"`
 	LastName  string    `json:"last_name"`
 	Email     string    `json:"email"`
@@ -23,11 +23,12 @@ func (u *User) PasswordMatches(plainText string) (bool, error) {
 		switch {
 		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
 			// when invalid password
-			return true, nil
+			return false, nil
 			// when something went wrong
 		default:
-			return true, err
+			return false, err
 		}
 	}
+
 	return true, nil
 }

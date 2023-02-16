@@ -94,7 +94,7 @@ const Login = () => {
           }
         ></Input>
         <hr />
-        <input type="submit" className="btn btn-primary" value="login" />
+        <input type="submit" className="btn btn-primary" value="Login" />
       </form>
     </div>
   );
