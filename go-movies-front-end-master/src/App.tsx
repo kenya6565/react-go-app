@@ -30,6 +30,7 @@ function App() {
   };
 
   // use useCallback to avoid a warning from useEffect
+  // regenerate refresh token
   const toggleRefresh = useCallback(
     (status: boolean) => {
       console.log("clicked");
@@ -53,7 +54,7 @@ function App() {
             .catch((error) => {
               console.log("user is not logged in");
             });
-        }, 600000);
+        }, 1000);
         setTickInterval(i);
         console.log("setting tick interval to ", i);
       } else {
@@ -68,6 +69,7 @@ function App() {
 
   useEffect(() => {
     // execute only if the user does not already have a JWT token
+    // do nothing when the user has already logged in
     if (jwtToken === "") {
       const requestOptions: RequestInit = {
         method: "GET",
@@ -158,8 +160,8 @@ function App() {
             context={{
               jwtToken,
               setJwtToken,
-              setAlertMessage,
               setAlertClassName,
+              setAlertMessage,
               toggleRefresh,
             }}
           />
