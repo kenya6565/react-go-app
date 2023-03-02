@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { MoviesList } from "../interfaces/movie";
 
 const Movie = () => {
   // set empty value to avoid type err
@@ -30,7 +29,12 @@ const Movie = () => {
   return (
     <div className="text-center">
       <h2>Movie: {movie.title}</h2>
-      <small><em>{movie.release_date}, {movie.runtime} minutes, Rated {movie.mpaa_rating}</em></small>
+      <small>
+        <em>
+          {movie.release_date}, {movie.runtime} minutes, Rated{" "}
+          {movie.mpaa_rating}
+        </em>
+      </small>
       <hr />
       <p>movie.description</p>
     </div>

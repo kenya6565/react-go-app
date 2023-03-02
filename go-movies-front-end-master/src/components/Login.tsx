@@ -27,6 +27,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    
     // prevent browser to reload as a default movement
     event.preventDefault();
     console.log("email/password", email, password);
