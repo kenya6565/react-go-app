@@ -33,8 +33,6 @@ function App() {
   // regenerate refresh token
   const toggleRefresh = useCallback(
     (status: boolean) => {
-      console.log("clicked");
-
       if (status) {
         console.log("turning on ticking");
         let i = setInterval(() => {
